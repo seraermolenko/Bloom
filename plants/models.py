@@ -1,5 +1,11 @@
 from django.db import models
 
+class personalPlant(models.Model):
+
+    personalPlantID = models.AutoField(primary_key=True)
+    plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
+    name = models.CharField(max_length=100, blank=True, null=True)
+
 class Plant(models.Model):
     plant_id = models.AutoField(primary_key=True)
 
@@ -64,26 +70,3 @@ class Plant(models.Model):
     bloom_months = models.JSONField(blank=True, null=True)    
     fruit_months = models.JSONField(blank=True, null=True)       
     ligneous_type = models.CharField(max_length=50, blank=True, null=True)             # Shrub, tree, parasite, and liana
-
-
-class Users(models.Model):
-
-    userID = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    email = models.CharField(max_length=50)
-    phone = models.IntegerField(blank=True, null=True)
-    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
-
-class Gardens(models.Model):
-
-    gardenID = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='gardens')
-    name = models.CharField(max_length=100)
-    private = models.BooleanField()
-
-
-class personalPlant(models.Model):
-
-    personalPlantID = models.AutoField(primary_key=True)
-    plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
-    name = models.CharField(max_length=100, blank=True, null=True)
