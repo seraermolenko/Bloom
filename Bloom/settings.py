@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'plants',
     'users',
     'gardens',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

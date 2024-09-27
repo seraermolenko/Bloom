@@ -1,11 +1,5 @@
 from django.db import models
 
-class personalPlant(models.Model):
-
-    personalPlantID = models.AutoField(primary_key=True)
-    plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
-    name = models.CharField(max_length=100, blank=True, null=True)
-
 class Plant(models.Model):
     plant_id = models.AutoField(primary_key=True)
 
@@ -70,3 +64,9 @@ class Plant(models.Model):
     bloom_months = models.JSONField(blank=True, null=True)    
     fruit_months = models.JSONField(blank=True, null=True)       
     ligneous_type = models.CharField(max_length=50, blank=True, null=True)             # Shrub, tree, parasite, and liana
+
+class personalPlant(models.Model):
+
+    personalPlantID = models.AutoField(primary_key=True)
+    plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
+    name = models.CharField(max_length=100, blank=True, null=True)
