@@ -1,5 +1,8 @@
 ## Bloom
-Are you curious about what plants your friends have? Do you struggle to keep your plants alive? Bloom is a web-based plant management application designed to help users create and manage personal gardens as-well as visit their friend's gardens.  
+Do you find it hard to keep your plants alive? Are you curious about the plants your friends are growing? Bloom is a web-based plant management and self-watering automation application designed to make gardening effortless and enjoyable. With Bloom, you can create and manage personal gardens, access detailed plant care information, and even connect with friends to share and explore their gardens.
+
+Whether you're a seasoned plant enthusiast or a beginner struggling to keep your greenery thriving, Bloom is here to make plant care easier and more interactive than ever.
+
 
 ***In Progress***
 
@@ -12,7 +15,15 @@ Are you curious about what plants your friends have? Do you struggle to keep you
 
 
 #### Introduction
-My plants kept dying I decided to create an application that will make my gardening life, interesting and easier. My goal was to develop something that can easily give you information about your plant, store your plants and automate the watering tasks. This application is being developed for myself and a few friends.
+I created Bloom after struggling to keep my plants alive. The goal is simple: build an application that combines plant management, automation, and community in one platform. Bloom helps you:
+
+- Access detailed care instructions for your plants.
+- Automate watering schedules based on plant preferences.
+- Track your plant's health, age, and growth.
+- Connect with friends to share gardens and plant cuttings.
+
+Bloom started as a personal project to enhance my gardening experience and is now being developed for myself and friends who share a love for plants.
+
 
 #### Technologies Used
 - Django for the back-end framework 
