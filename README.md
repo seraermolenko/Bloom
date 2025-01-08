@@ -3,7 +3,6 @@ Do you find it hard to keep your plants alive? Are you curious about the plants 
 
 Whether you're a seasoned plant enthusiast or a beginner struggling to keep your greenery thriving, Bloom is here to make plant care easier and more interactive than ever.
 
-
 ***In Progress***
 
 #### Table of Contents
@@ -67,14 +66,12 @@ Bloom is currently in the early stages of development.
 
 **Current Progress**
 - Created database schema and applied initial migrations.
-- Propagated the database suing Treffle.io API to fetch information
+- Propagated the database with 100 most-popular plants, using Treffle.io API to fetch information
 - Connected frontend to back end API's
 - Initialized front end development with basic layout and components  
 
 **Upcoming Tasks**
-- Complete UI
-- Add user authentication (Oauth2)
 - Iteratively implement functionalities
-- Deploy 
+- Deploy (future)
 
 
