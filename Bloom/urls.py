@@ -1,5 +1,5 @@
 """
-URL configuration for Bloom project.
+URL configuration for bloom project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('plants/', include('plants.urls')),
-    path('gardens/', include('gardens.urls')),
-    path('users/', include('users.urls'))
+    path('plants/search/', views.search_plants, name='search_plants'),
+    # path('users/', include('users.urls')),
 ]

@@ -1,4 +1,12 @@
 from django.db import models
+from users.models import Users  
+
+class Gardens(models.Model):
+
+    gardenID = models.AutoField(primary_key=True)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='gardens')
+    name = models.CharField(max_length=100)
+    private = models.BooleanField()
 
 class Plant(models.Model):
     plant_id = models.AutoField(primary_key=True)
@@ -53,8 +61,6 @@ class Plant(models.Model):
     max_temp = models.IntegerField(blank=True, null=True)                                # The maximum tolerable temperature for the species. In celsius or fahrenheit degrees
     min_temp = models.IntegerField(blank=True, null=True)                                # The minimum tolerable temperature for the species. In celsius or fahrenheit degrees
 
-
-    minimum_root_depth = models.IntegerField(blank=True, null=True) 
     days_to_harvest = models.IntegerField(blank=True, null=True)                         # The average numbers of days required to from planting to harvest
     atmospheric_humidity = models.IntegerField(blank=True, null=True)                    # Required relative humidity in the air, on a scale from 0 (<=10%) to 10 (>= 90%)
     min_precipitation = models.JSONField(blank=True, null=True)                          # Minimum precipitation per year, in milimeters per year
@@ -65,7 +71,7 @@ class Plant(models.Model):
     fruit_months = models.JSONField(blank=True, null=True)       
     ligneous_type = models.CharField(max_length=50, blank=True, null=True)             # Shrub, tree, parasite, and liana
 
-class personalPlant(models.Model):
+class PersonalPlant(models.Model):
 
     personalPlantID = models.AutoField(primary_key=True)
     plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
