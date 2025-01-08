@@ -1,5 +1,5 @@
 import requests
-from .models import Plant
+from .plants.models import Plant
 import os
 import time 
 from requests.exceptions import ReadTimeout
