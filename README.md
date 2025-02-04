@@ -1,7 +1,9 @@
 ## Bloom
-Do you find it hard to keep your plants alive? Are you curious about the plants your friends are growing? Bloom is a web-based plant management and self-watering automation application designed to make gardening effortless and enjoyable. With Bloom, you can create and manage personal gardens, access detailed plant care information, and even connect with friends to share and explore their gardens.
 
-Whether you're a seasoned plant enthusiast or a beginner struggling to keep your greenery thriving, Bloom is here to make plant care easier and more interactive than ever.
+
+Bloom is set to be a plant management and self-watering automation application designed to make gardening effortless and enjoyable. With Bloom, you can create and manage personal gardens, access detailed plant care information, and even connect with friends to share and explore their gardens.
+
+Automated watering: When your plant humidity reaches below its intended threshold, bl
 
 ***In Progress***
 
@@ -25,12 +27,14 @@ Bloom started as a personal project to enhance my gardening experience and is no
 
 
 #### Technologies Used
+- ESP32 for reading humiditiy senor, acts as Kafka Producer
 - Django for the back-end framework 
 - React for the front-end framework
 - PostgresSQL for the database 
 - Docker Container for the PostgresSQL database
 - pgAdmin4 for the PostgresSQL database
 - API's: Treffle.io
+  
 
 #### Features and Use Cases
 
@@ -73,5 +77,6 @@ Bloom is currently in the early stages of development.
 **Upcoming Tasks**
 - Iteratively implement functionalities
 - Deploy (future)
+- Integrated water automation 
 
 
