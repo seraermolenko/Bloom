@@ -1,5 +1,7 @@
 ## Bloom
 
+** Humidity repository contains ESP32 producer **
+
 - Plant information: Databse containing 200 popular plants and their information. 
 - Humditiy sensing: When a plant's humidity falls outside of its specific threshold, bloom will notify you and trigger automated watering
 - UI: create and manage personal gardens, access detailed plant care information, and even connect with friends to share and explore their gardens.
