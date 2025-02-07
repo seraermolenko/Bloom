@@ -1,23 +1,22 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from ..bloom.models import Gardens
-from .serializers import GardensSerializer
+from .models import Gardens
 from rest_framework import viewsets
 from .models import Plant
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q  
-from .models import personalPlant
+from .models import PersonalPlant
 from .serializers import PlantSerializer
 from .serializers import personalPlantSerializer
 
 def home(request):
     return render(request, 'home.html') 
 
-class GardensViewSet(viewsets.ModelViewSet):
-    queryset = Gardens.objects.all()
-    serializer_class = GardensSerializer
+# class GardensViewSet(viewsets.ModelViewSet):
+#     queryset = Gardens.objects.all()
+#     serializer_class = GardensSerializer
 
 @api_view(['GET'])
 def search_plants(request):

@@ -30,9 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'plants',
+    'bloom',
     #'users',
-    #'gardens',
     'rest_framework',
 ]
 
