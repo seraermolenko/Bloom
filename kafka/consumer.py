@@ -13,7 +13,7 @@ def main():
     app = Application(
         broker_address=broker_url,
         loglevel="DEBUG",
-        auto_offset_reset="earliest",
+        auto_offset_reset="latest",
     )
 
     print("Consumer started...")
