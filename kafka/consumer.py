@@ -1,18 +1,46 @@
-from kafka import KafkaConsumer
+# from kafka import KafkaConsumer
+from quixstreams import Application 
 import json
+from dotenv import load_dotenv
+import os
 
-# NOTE: Kafka stores messages in a binary format, not as a string. Need to deserialize
+load_dotenv() 
 
-consumer = KafkaConsumer(
-    "humidity",
-    bootstrap_servers="localhost:9092",
-    auto_offset_reset="earliest",
-    enable_auto_commit=True,
-    group_id="humidity-group",
-    value_deserializer=lambda x: json.loads(x.decode('utf-8'))
-)
+broker_url = os.getenv('BROKER_URL')
 
-print("Listening for humidity data...")
-for message in consumer:
-    data = message.value
-    print(f"Received data from {data['plant_id']}: {data['humidity']}% humidity")
+def main():
+    # quixstreams setup
+    app = Application(
+        broker_address=broker_url,
+        loglevel="DEBUG",
+        auto_offset_reset="earliest",
+    )
+
+    print("Consumer started...")
+    with app.get_consumer() as consumer: 
+        #Topic of intrest 
+        consumer.subscribe(["humidity"])
+
+        while True: 
+            msg = consumer.poll(2) # Change to longer time legnth once esp32 set up
+            # breakpoint()
+            if msg is None: 
+                print("Waiting...")
+            elif msg.error() is not None: 
+                raise Exception(msg.error())
+            else:
+                # byte string so decdoing 
+                key = msg.key().decode('utf8')
+                # json 
+                value = json.loads(msg.value())
+                offset = msg.offset()
+
+                print(f"Offset: {offset}, Sensor ID: {key}, Data: {value}")
+                # consumer.store_offsets(msg)
+                # breakpoint()
+
+if __name__ == "__main__": 
+    try: 
+        main()
+    except KeyboardInterrupt: 
+        pass
