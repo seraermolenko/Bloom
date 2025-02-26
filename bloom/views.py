@@ -10,7 +10,8 @@ from django.db.models import Q
 from .models import PersonalPlant
 from .serializers import PlantSerializer
 from .serializers import personalPlantSerializer
-from confluent_kafka import Producer
+from kafka import KafkaProducer
+import json
 
 def home(request):
     return render(request, 'home.html') 
@@ -32,27 +33,41 @@ def search_plants(request):
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-producer = Producer({
+
+producer = KafkaProducer(
     # kafkas contact point, the host and port of broker 
-    'bootstrap.servers': 'localhost:9092' 
-})
+    bootstrap_servers='localhost:9092',   
+ 
+    # Serealizer for kafka producer, converts python object to json string in UTF-8 bytes (needed for kafka sending data)
+    #NOTE: Why seralizer is needed
+    # Flask’s built-in request handling can automatically parse the JSON string into a Python object (like a dictionary)
+    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+    key_serializer=lambda k: str(k).encode('utf-8')
+)
 
 @api_view(['POST'])
-def send_humidity(request):
+def send_humidity_kafka(request):
     try:
         # Reading the http post request from esp32
-        data = request.json
-        plant_id = data.get("sensor_id")
+        data = request.data
+        sensor_id = data.get("sensor_id")
         humidity = data.get("humidity")
 
-        if not plant_id or humidity is None:
+        if not sensor_id or humidity is None:
             return Response({"error": "Missing data"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Kafka requires a serialized message
-        producer.produce("humidity", key=str(plant_id), value=json.dumps(data))
-        producer.flush()
+        kafka_message = {
+            "sensor_id": sensor_id,
+            "humidity": humidity
+        }
+
+        producer.send('humidity', key=sensor_id, value=kafka_message)
+        # send any buffered messages
+        # producer.flush() 
+
         return Response({"message": "Data sent to Kafka"}, status=status.HTTP_200_OK)
     
     except Exception as e:
+        print(f"Error: {str(e)}") 
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

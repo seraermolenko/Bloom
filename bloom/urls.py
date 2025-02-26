@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-from .views import send_humidity
+from .views import send_humidity_kafka
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('plants/search/', views.search_plants, name='search_plants'),
-    # path('users/', include('users.urls')),
-    path('humidity/', send_humidity, name='send_humidity'),
+    # path('users/', include('users.urls')), # user handeling to user app 
+    path('humidity/', views.send_humidity_kafka, name='send_humidity_kafka'),
 ]
