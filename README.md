@@ -45,7 +45,7 @@ Tables:
 - **Personal Plants**: Links users to plants with care history
 - **Garden**: Stores garden-specific information
 
-![Alt text](images/pgSnapshot.py)
+![databaseSnapshot](images/pgSnapshot.py)
 
 
 #### Roadmap 
