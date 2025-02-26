@@ -41,9 +41,12 @@ Eventually, Bloom could offer
 
 Tables:
 - **Plants**: Stores plant information (name, family, genus, etc.)
-- **Users**: Stores user details and preferences
+- **Users**: (soon to come) Stores user details and preferences
 - **Personal Plants**: Links users to plants with care history
 - **Garden**: Stores garden-specific information
+
+![Alt text](images/pgSnapshot.py)
+
 
 #### Roadmap 
 
