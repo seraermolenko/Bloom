@@ -7,6 +7,8 @@
 
 #### Introduction
 
+I created Bloom after struggling to keep my plants alive. The goal is simple: build an application that combines plant management, information, and automation. This project was also driven by desire to learn new tools and concepts, ranging from containerization and data streaming to working with sensor drivers. 
+
 Quick summary: 
 Bloom has a database containing 200 popular plants and their information. An ESP32 streams values from a humidity sensor monitors my plant's soil level. When this value is outside of the specific plant's threshold, a warning is sent. 
 
@@ -40,4 +42,18 @@ Eventually, Bloom could offer
 Tables:
 - **Plants**: Stores plant information (name, family, genus, etc.)
 - **Users**: Stores user details and preferences
+- **Personal Plants**: Links users to plants with care history
+- **Garden**: Stores garden-specific information
 
+#### Roadmap 
+
+**Current Progress**
+- Created database schema
+- Propagated the database with 100 most-popular plants, using Treffle.io API to fetch information
+- Connected frontend to backend API's
+- Created a kafka topic and established a connection between producer/consumer
+
+**Upcoming Tasks**
+- Iteratively implement functionalities
+- Deploy (future)
+- Integrated water automation 
