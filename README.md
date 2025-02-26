@@ -47,13 +47,13 @@ Tables:
 
 #### Roadmap 
 
-**Current Progress**
+Current Progress
 - Created database schema
 - Propagated the database with 100 most-popular plants, using Treffle.io API to fetch information
 - Connected frontend to backend API's
 - Created a kafka topic and established a connection between producer/consumer
 
-**Upcoming Tasks**
+Upcoming Tasks
 - Iteratively implement functionalities
 - Deploy (future)
 - Integrated water automation 
