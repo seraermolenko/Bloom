@@ -1,5 +1,10 @@
 ## Bloom
-Are you curious about what plants your friends have? Do you struggle to keep your plants alive? Bloom is a web-based plant management application designed to help users create and manage personal gardens as-well as visit their friend's gardens.  
+
+** Humidity repository contains ESP32 producer **
+
+- Plant information: Databse containing 200 popular plants and their information. 
+- Humditiy sensing: When a plant's humidity falls outside of its specific threshold, bloom will notify you and trigger automated watering
+- UI: create and manage personal gardens, access detailed plant care information, and even connect with friends to share and explore their gardens.
 
 ***In Progress***
 
@@ -12,15 +17,25 @@ Are you curious about what plants your friends have? Do you struggle to keep you
 
 
 #### Introduction
-My plants kept dying I decided to create an application that will make my gardening life, interesting and easier. My goal was to develop something that can easily give you information about your plant, store your plants and automate the watering tasks. This application is being developed for myself and a few friends.
+I created Bloom after struggling to keep my plants alive. The goal is simple: build an application that combines plant management, automation, and community in one platform. Bloom helps you:
+
+- Access detailed care instructions for your plants.
+- Automate watering schedules based on plant preferences.
+- Track your plant's health, age, and growth.
+- Connect with friends to share gardens and plant cuttings.
+
+Bloom started as a personal project to enhance my gardening experience and is now being developed for myself and friends who share a love for plants.
+
 
 #### Technologies Used
+- ESP32 for reading humiditiy senor, acts as Kafka Producer
 - Django for the back-end framework 
 - React for the front-end framework
 - PostgresSQL for the database 
 - Docker Container for the PostgresSQL database
 - pgAdmin4 for the PostgresSQL database
 - API's: Treffle.io
+  
 
 #### Features and Use Cases
 
@@ -56,14 +71,13 @@ Bloom is currently in the early stages of development.
 
 **Current Progress**
 - Created database schema and applied initial migrations.
-- Propagated the database suing Treffle.io API to fetch information
+- Propagated the database with 100 most-popular plants, using Treffle.io API to fetch information
 - Connected frontend to back end API's
 - Initialized front end development with basic layout and components  
 
 **Upcoming Tasks**
-- Complete UI
-- Add user authentication (Oauth2)
 - Iteratively implement functionalities
-- Deploy 
+- Deploy (future)
+- Integrated water automation 
 
 
