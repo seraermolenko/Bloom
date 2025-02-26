@@ -57,11 +57,10 @@ def send_humidity_kafka(request):
             return Response({"error": "Missing data"}, status=status.HTTP_400_BAD_REQUEST)
 
         kafka_message = {
-            "sensor_id": sensor_id,
             "humidity": humidity
         }
 
-        producer.send('humidity', key=sensor_id, value=kafka_message)
+        producer.send("humidity", key=sensor_id, value=kafka_message)
         # send any buffered messages
         # producer.flush() 
 
