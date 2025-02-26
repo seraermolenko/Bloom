@@ -1,33 +1,41 @@
 # from kafka import KafkaConsumer
 from quixstreams import Application 
 import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv() 
+
+broker_url = os.getenv('BROKER_URL')
 
 def main():
+    # quixstreams setup
     app = Application(
-        broker_address="localhost:9092",
+        broker_address=broker_url,
         loglevel="DEBUG",
-        consumer_group="Humidity",
-        auto_offset_reset="latest"
+        auto_offset_reset="earliest",
     )
 
+    print("Consumer started...")
     with app.get_consumer() as consumer: 
         #Topic of intrest 
-        consumer.subscribe(["Humidity"])
+        consumer.subscribe(["humidity"])
 
         while True: 
-            msg = consumer.poll(1)
+            msg = consumer.poll(2) # Change to longer time legnth once esp32 set up
+            # breakpoint()
             if msg is None: 
                 print("Waiting...")
-            elif msg.Error() is not None: 
+            elif msg.error() is not None: 
                 raise Exception(msg.error())
             else:
                 # byte string so decdoing 
                 key = msg.key().decode('utf8')
                 # json 
-                value = json.loads(msg.value)
+                value = json.loads(msg.value())
                 offset = msg.offset()
 
-                print(f"{offset} {key} {value}")
+                print(f"Offset: {offset}, Sensor ID: {key}, Data: {value}")
                 # consumer.store_offsets(msg)
                 # breakpoint()
 
@@ -36,18 +44,3 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt: 
         pass
-
-# consumer = KafkaConsumer(
-#     "humidity",
-#     bootstrap_servers="localhost:9092",
-#     auto_offset_reset="earliest",
-#     enable_auto_commit=True,
-#     group_id="humidity-group",
-#     # NOTE: Kafka stores messages in a binary format, not as a string. Need to deserialize
-#     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
-# )
-
-# print("Listening for humidity data...")
-# for message in consumer:
-#     data = message.value
-#     print(f"Received data from {data['plant_id']}: {data['humidity']}% humidity")
