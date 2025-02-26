@@ -77,7 +77,7 @@ def send_humidity_kafka(request):
 
 
 @api_view(['POST'])
-def evaluate_threshold(request):
+def evaluate_humidity(request):
     try:
 
         data = json.loads(request.body)
@@ -91,7 +91,8 @@ def evaluate_threshold(request):
         # Plant assocation with sensor ID, manually add in for now
         personal_plant = PersonalPlant.objects.get(sensor_id=sensor_id)
         plant = personal_plant.plantID
-        humidity = plant.humidity  
+        # humidity = plant.humidity  
+        humidity = 10
 
         min_threshold = humidity - 2
         max_threshold = humidity + 2

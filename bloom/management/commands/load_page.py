@@ -9,34 +9,20 @@ load_dotenv()
 TOKEN = os.getenv('TOKEN')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bloom.settings')
 
-PLANTS_TO_FETCH = [
-    "Rose", "Tulip", "Lavender", "Bonsai Tree", 
-    "Snake Plant", "Spider Plant", "Peace Lily", 
-    "Fiddle Leaf Fig", "Aloe Vera", "Pothos", 
-    "ZZ Plant", "Rubber Plant", "Monstera Deliciosa", 
-    "English Ivy", "Chinese Evergreen", "Philodendron", 
-    "Dracaena", "Cast Iron Plant", "Boston Fern", 
-    "Calathea", "Orchid", "Jade Plant", "Sunflower"
-]
-
-def fetch_plant_by_name(common_name):
-    url = f"https://trefle.io/api/v1/plants/search?token={TOKEN}&q={common_name}"
-
+def fetch_plants_first_page():
+    url = f"https://trefle.io/api/v1/plants?token={TOKEN}"
+    
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Exception raised for 4XX/5XX responses (client or server errors)
+        response.raise_for_status()
         return response.json().get('data', [])
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching {common_name}: {e}")
+        print(f"Error fetching plants: {e}")
         return []
 
 def get_plant_details(self_link):
     url = f'https://trefle.io{self_link}?token={TOKEN}'
-    https://trefle.io/api/v1/species?page=2?='W1nnc7w1RK-F7EUcxpGB6j3i2VHzAc5nQlkp-ab-7xw'
-
-    https://trefle.io/api/v1/species/aa-riobambae?token=W1nnc7w1RK-F7EUcxpGB6j3i2VHzAc5nQlkp-ab-7xw
-
-
+    
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -84,27 +70,11 @@ def save_plant(plant_data, detailed_data=None):
             'fruit_months': 'fruit_months',
             'ligneous_type': 'ligneous_type'
     }
-    for api_field, model_field in field_mapping.items():
+    
+    if detailed_data:
+        for api_field, model_field in field_mapping.items():
             if api_field in detailed_data:
                 plant_info[model_field] = detailed_data.get(api_field)
-
-    
-    # if detailed_data:
-    #     # Derail attributes 
-    #     detail_keys = [
-    #         'duration', 'vegetable', 'growth_rate', 'avg_height', 'toxicity',
-    #         'maximum_height', 'toxicity', 'light', 'color', 'growth_rate', 'maximum_height',
-    #         'maximum_temperature', 'minimum_temperature', 'ph_maximum', 'ph_minimum',
-    #         'bloom_months', 'fruit_months', 'edible', 'edible_parts', 'vegetable',
-    #         'soil_humidity', 'soil_texture', 'soil_nutriments', 'soil_salinity', 
-    #         'light', 'row_spacing', 'days_to_harvest', 'atmospheric_humidity', 
-    #         'maximum_precipitation', 'minimum_precipitation', 'bloom_months', 'fruit_months', 
-    #         'ligneous_type', 
-    #     ]
-        
-    #     for key in detail_keys:
-    #         if key in detailed_data:
-    #             plant_info[key] = detailed_data.get(key)
     
     # Save/ Update
     try:
@@ -119,38 +89,40 @@ def save_plant(plant_data, detailed_data=None):
         return False
 
 def fetch_and_save_plants():
-    print(f"Starting to fetch data for {len(PLANTS_TO_FETCH)} plants...")
+    print("Starting to fetch plants from the first page...")
+    
+    # Fetch all plants from the first page
+    all_plants = fetch_plants_first_page()
+    
+    if not all_plants:
+        print("Error: Failed to fetch initial plant data.")
+        return
+        
+    print(f"Successfully fetched {len(all_plants)} plants from first page.")
     
     plants_processed = 0
     plants_added = 0
     
-    for common_name in PLANTS_TO_FETCH:
-        print(f"\nSearching for: {common_name}")
-        plants = fetch_plant_by_name(common_name)
-        
-        if not plants:
-            print(f"No results found for '{common_name}'")
-            continue
-            
-        # First result
-        plant = plants[0]
+    # Process each plant from the first page
+    for plant in all_plants:
         plants_processed += 1
+        print(f"\nProcessing plant {plants_processed}/{len(all_plants)}: {plant.get('common_name', 'Unknown')}")
         
         detailed_data = None
         self_link = plant.get('links', {}).get('self')
         if self_link:
             print(f"Fetching detailed information...")
             detailed_data = get_plant_details(self_link)
+            # Add a small delay to avoid overwhelming the API
+            time.sleep(1)
             
-        time.sleep(1)
-        
         if save_plant(plant, detailed_data):
             plants_added += 1
     
     print(f"\nCompleted! Processed {plants_processed} plants and added/updated {plants_added} plants in the database.")
 
 class Command(BaseCommand):
-    help = 'Fetch plant data from Trefle API and store in database'
+    help = 'Fetch all plants from the first page of Trefle API and store in database'
 
     def handle(self, *args, **kwargs):
         fetch_and_save_plants()

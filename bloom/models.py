@@ -3,15 +3,14 @@ from django.db import models
 class Gardens(models.Model):
 
     gardenID = models.AutoField(primary_key=True)
-    #user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='gardens')
+    #userID = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='gardens')
     name = models.CharField(max_length=100)
     private = models.BooleanField()
 
 class Plant(models.Model):
     plant_id = models.AutoField(primary_key=True)
-
     common_name = models.CharField(max_length=50, null=True)
-    scientific_name = models.CharField(max_length=100)
+    scientific_name = models.CharField(max_length=100, unique=True)
     year = models.IntegerField(null=True)                                                  # The first publication year of a valid name of this species                             
     family = models.CharField(max_length=100, null=True) 
     genus = models.CharField(max_length=100, null=True)  
@@ -64,7 +63,7 @@ class Plant(models.Model):
     atmospheric_humidity = models.IntegerField(blank=True, null=True)                    # Required relative humidity in the air, on a scale from 0 (<=10%) to 10 (>= 90%)
     min_precipitation = models.JSONField(blank=True, null=True)                          # Minimum precipitation per year, in milimeters per year
     max_precipitation = models.JSONField(blank=True, null=True)                          # Maximum precipitation per year, in milimeters per year
-    minimum_root_depth = models.JSONField(blank=True, null=True)                         # Minimum depth of soil required for the species, in centimeters. Plants that do not have roots such as rootless aquatic plants have 0
+    min_root_depth = models.JSONField(blank=True, null=True)                         # Minimum depth of soil required for the species, in centimeters. Plants that do not have roots such as rootless aquatic plants have 0
 
     bloom_months = models.JSONField(blank=True, null=True)    
     fruit_months = models.JSONField(blank=True, null=True)       
@@ -75,5 +74,5 @@ class PersonalPlant(models.Model):
     personalPlantID = models.AutoField(primary_key=True)
     plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
     name = models.CharField(max_length=100, blank=True, null=True)
-    sensor_id = models.DecimalField(max_digits=3, blank=True, null=True)
-    userID = 1 
+    sensor_id = models.IntegerField(blank=True, null=True)
+    userID = 0
