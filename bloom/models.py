@@ -17,27 +17,27 @@ class Plant(models.Model):
     genus = models.CharField(max_length=100, null=True)  
     genus_id = models.IntegerField(null=True)  
     
-    native = models.JSONField(blank=True, null=True)                                        # Where the species is native from 
-    shape_and_orientation = models.CharField(max_length=100, blank=True, null=True)         # The predominant shape of the species
+    # native = models.JSONField(blank=True, null=True)                                        # Where the species is native from 
+    # shape_and_orientation = models.CharField(max_length=100, blank=True, null=True)         # The predominant shape of the species
 
 
     edible = models.BooleanField(blank=True, null=True)
     edible_parts = models.JSONField(blank=True, null=True)
-    duration = models.JSONField(blank=True, null=True)
-    observation = models.CharField(max_length=200)
+    #duration = models.JSONField(blank=True, null=True)
+    #observation = models.CharField(max_length=200)
     vegetable = models.BooleanField(blank=True, null=True)
 
-    conspicuous_fruit = models.BooleanField(blank=True, null=True)                       # Is the fruit visible?
-    conspicuous_flower = models.BooleanField(blank=True, null=True)                      # Is the flower visible?
+    #conspicuous_fruit = models.BooleanField(blank=True, null=True)                       # Is the fruit visible?
+    #conspicuous_flower = models.BooleanField(blank=True, null=True)                      # Is the flower visible?
 
-    flower_color = models.CharField(max_length=50, null=True)
-    leaf_color = models.JSONField(blank=True, null=True)          
-    fruit_color = models.JSONField(blank=True, null=True)
-    fruit_shape = models.CharField(max_length=50, null=True)
-    seed_persistant = models.BooleanField(blank=True, null=True)                         # Are the seeds persistant on the plant?
+    #flower_color = models.CharField(max_length=50, null=True)
+    #leaf_color = models.JSONField(blank=True, null=True)          
+    #fruit_color = models.JSONField(blank=True, null=True)
+    #fruit_shape = models.CharField(max_length=50, null=True)
+    #seed_persistant = models.BooleanField(blank=True, null=True)                         # Are the seeds persistant on the plant?
 
-    leaf_retention = models.BooleanField(blank=True, null=True)                          # Do leaves stay all year long?
-    leaf_texture = models.CharField(max_length=50, blank=True, null=True)
+    #leaf_retention = models.BooleanField(blank=True, null=True)                          # Do leaves stay all year long?
+    #leaf_texture = models.CharField(max_length=50, blank=True, null=True)
 
     growth_rate = models.CharField(max_length=50, blank=True, null=True)
     max_height = models.IntegerField(blank=True, null=True) 
@@ -75,3 +75,5 @@ class PersonalPlant(models.Model):
     personalPlantID = models.AutoField(primary_key=True)
     plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
     name = models.CharField(max_length=100, blank=True, null=True)
+    sensor_id = models.DecimalField(max_digits=3, blank=True, null=True)
+    userID = 1 

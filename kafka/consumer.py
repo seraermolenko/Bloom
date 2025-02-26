@@ -1,12 +1,14 @@
 # from kafka import KafkaConsumer
 from quixstreams import Application 
 import json
+import requests 
 from dotenv import load_dotenv
 import os
 
 load_dotenv() 
 
 broker_url = os.getenv('BROKER_URL')
+humidity_url = os.getenv("HUM_URL")
 
 def main():
     # quixstreams setup
@@ -38,6 +40,12 @@ def main():
                 print(f"Offset: {offset}, Sensor ID: {key}, Data: {value}")
                 # consumer.store_offsets(msg)
                 # breakpoint()
+
+                data = {
+                    "sensor_id": value,
+                    "humidity": key,
+                }
+                response = requests.post(humidity_url, json=data)
 
 if __name__ == "__main__": 
     try: 

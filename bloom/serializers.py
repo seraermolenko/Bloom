@@ -3,7 +3,7 @@ from .models import Gardens
 from .models import Plant 
 from .models import PersonalPlant 
 
-class PlantSerializer(serializers.ModelSerializer): 
+class GardenSerializer(serializers.ModelSerializer): 
 	class Meta: 
 		model = Gardens
 		fields = '__all__'
@@ -11,10 +11,10 @@ class PlantSerializer(serializers.ModelSerializer):
 class PlantSerializer(serializers.ModelSerializer): 
 	class Meta: 
 		model = Plant 
-		fields = '__all__'
+		fields = fields = ['id', 'scientific_name', 'common_name'] 
 		
-class personalPlantSerializer(serializers.ModelSerializer): 
+class PersonalPlantSerializer(serializers.ModelSerializer): 
 	plant = PlantSerializer() 
 	class Meta: 
 		model = PersonalPlant 
-		fields = ['user', 'plant', 'care_history']
+		fields = '__all__'

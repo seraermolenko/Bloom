@@ -9,29 +9,34 @@ from rest_framework import status
 from django.db.models import Q  
 from .models import PersonalPlant
 from .serializers import PlantSerializer
-from .serializers import personalPlantSerializer
+from .serializers import PersonalPlantSerializer
 from kafka import KafkaProducer
 import json
 
-def home(request):
-    return render(request, 'home.html') 
+# def home(request):
+#     return render(request, 'home.html') 
 
-# class GardensViewSet(viewsets.ModelViewSet):
-#     queryset = Gardens.objects.all()
-#     serializer_class = GardensSerializer
 
 @api_view(['GET'])
 def search_plants(request):
-    query = request.GET.get('name')
+    try: 
+        data = json.loads(request.body)
+        name = data.get('name')
     
-    plants = Plant.objects.filter(
-    Q(common_name__icontains=query) | Q(scientific_name__icontains=query) )
+        plants = Plant.objects.filter( Q(common_name__icontains=name) | Q(scientific_name__icontains=name) )
+        if not plants:
+            return Response('No plants found', status=status.HTTP_404_NOT_FOUND)
 
-    if not plants:
-        return Response('No plants found', status=status.HTTP_404_NOT_FOUND)
+        serializer = PlantSerializer(plants, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    except json.JSONDecodeError:
+        return Response({"error": "Invalid JSON format"}, status=400)
+    except Exception as e:
+        print(f"Error: {str(e)}") 
+        return Response({"error": str(e)}, status=400)
+
+
 
 
 producer = KafkaProducer(
@@ -50,8 +55,8 @@ def send_humidity_kafka(request):
     try:
         # Reading the http post request from esp32
         data = request.data
-        sensor_id = data.get("sensor_id")
-        humidity = data.get("humidity")
+        sensor_id = data.get('sensor_id')
+        humidity = data.get('humidity')
 
         if not sensor_id or humidity is None:
             return Response({"error": "Missing data"}, status=status.HTTP_400_BAD_REQUEST)
@@ -70,3 +75,81 @@ def send_humidity_kafka(request):
         print(f"Error: {str(e)}") 
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(['POST'])
+def evaluate_threshold(request):
+    try:
+
+        data = json.loads(request.body)
+        sensor_id = data.get('sensor_id')
+        humidity = data.get('humidity')
+
+        if not sensor_id or humidity is None:
+            return Response({"error": "Missing data"}, status=status.HTTP_400_BAD_REQUEST)
+    
+        
+        # Plant assocation with sensor ID, manually add in for now
+        personal_plant = PersonalPlant.objects.get(sensor_id=sensor_id)
+        plant = personal_plant.plantID
+        humidity = plant.humidity  
+
+        min_threshold = humidity - 2
+        max_threshold = humidity + 2
+
+        if humidity < min_threshold or humidity > max_threshold:
+            return Response({"warning": "Humidity outside acceptable range!"}, status=200)
+        else: 
+            return Response({"message": "Humidity is within acceptable range."}, status=200)
+
+    except Plant.DoesNotExist:
+        return Response({"error": "Plant not found for the given sensor_id"}, status=404)
+    except Exception as e:
+        print(f"Error: {str(e)}") 
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['PUT'])
+def assign_sensorID(request):
+    try: 
+        data = json.loads(request.body)
+        sensorID = data.get('sensorID')
+        personalPlantID = data.get('personalPlantID')
+
+        try:
+            personal_plant = PersonalPlant.objects.get(personalPlantID=personalPlantID)
+        except PersonalPlant.DoesNotExist:
+            return Response({"error": "PersonalPlant with the given ID does not exist"}, status=404)
+    
+        personal_plant.sensor_id = sensorID
+        personal_plant.save()
+
+        return Response({"message": "Sensor ID assigned successfully!"}, status=200)
+
+    except json.JSONDecodeError:
+        return Response({"error": "Invalid JSON format"}, status=400)
+    except Exception as e:
+        print(f"Error: {str(e)}") 
+        return Response({"error": str(e)}, status=400)
+    
+
+@api_view(['GET'])
+def search_PersonalPlant(request):
+    try: 
+        data = json.loads(request.body)
+        userID = json.loads('userID')
+        name = json.loads('name')
+
+        if not name:
+            return Response({"error": "Name parameter is required."}, status=400)
+        if not userID:
+            return Response({"error": "UserID parameter is required."}, status=400)
+
+        personal_plants = PersonalPlant.objects.filter(name__icontains=name, userID=userID)
+        serializer = PersonalPlantSerializer(personal_plants, many=True)
+        return Response(serializer.data, status=200)
+    
+    except json.JSONDecodeError:
+        return Response({"error": "Invalid JSON format"}, status=400)
+    except Exception as e:
+        print(f"Error: {str(e)}") 
+        return Response({"error": str(e)}, status=400)
