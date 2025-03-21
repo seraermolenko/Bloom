@@ -20,8 +20,7 @@ import json
 @api_view(['GET'])
 def search_plants(request):
     try: 
-        data = json.loads(request.body)
-        name = data.get('name')
+        name = request.query_params.get('name')
     
         plants = Plant.objects.filter( Q(common_name__icontains=name) | Q(scientific_name__icontains=name) )
         if not plants:
@@ -35,8 +34,6 @@ def search_plants(request):
     except Exception as e:
         print(f"Error: {str(e)}") 
         return Response({"error": str(e)}, status=400)
-
-
 
 
 producer = KafkaProducer(
@@ -88,9 +85,9 @@ def evaluate_humidity(request):
             return Response({"error": "Missing data"}, status=status.HTTP_400_BAD_REQUEST)
     
         
-        # Plant assocation with sensor ID, manually add in for now
-        personal_plant = PersonalPlant.objects.get(sensor_id=sensor_id)
-        plant = personal_plant.plantID
+        # NOTE: Plant assocation with sensor ID, manually add in for now
+        # personal_plant = PersonalPlant.objects.get(sensor_id=sensor_id)
+        # plant = personal_plant.plantID
         # humidity = plant.humidity  
         humidity = 10
 
@@ -112,16 +109,15 @@ def evaluate_humidity(request):
 @api_view(['PUT'])
 def assign_sensorID(request):
     try: 
-        data = json.loads(request.body)
-        sensorID = data.get('sensorID')
-        personalPlantID = data.get('personalPlantID')
+        sensor_id = request.query_params.get('sensorID')
+        personalPlantID = request.query_params.get('personalPlantID')
 
         try:
             personal_plant = PersonalPlant.objects.get(personalPlantID=personalPlantID)
         except PersonalPlant.DoesNotExist:
             return Response({"error": "PersonalPlant with the given ID does not exist"}, status=404)
     
-        personal_plant.sensor_id = sensorID
+        personal_plant.sensor_id = sensor_id
         personal_plant.save()
 
         return Response({"message": "Sensor ID assigned successfully!"}, status=200)
@@ -136,16 +132,15 @@ def assign_sensorID(request):
 @api_view(['GET'])
 def search_PersonalPlant(request):
     try: 
-        data = json.loads(request.body)
-        userID = json.loads('userID')
-        name = json.loads('name')
+        user_id = request.query_params.get('user_id')
+        name = request.query_params.get('name')
 
         if not name:
             return Response({"error": "Name parameter is required."}, status=400)
-        if not userID:
-            return Response({"error": "UserID parameter is required."}, status=400)
+        if not user_id:
+            return Response({"error": "User_id parameter is required."}, status=400)
 
-        personal_plants = PersonalPlant.objects.filter(name__icontains=name, userID=userID)
+        personal_plants = PersonalPlant.objects.filter(name__icontains=name, user_id=user_id)
         serializer = PersonalPlantSerializer(personal_plants, many=True)
         return Response(serializer.data, status=200)
     
@@ -154,3 +149,33 @@ def search_PersonalPlant(request):
     except Exception as e:
         print(f"Error: {str(e)}") 
         return Response({"error": str(e)}, status=400)
+
+@api_view(['POST'])
+def create_personalPlant(request):
+    try: 
+        data = json.loads(request.body)
+        plant_id = data.get('plant_id')
+        user_id = data.get('user_id')
+        name = data.get('name')
+
+        try:
+            plant = Plant.objects.get(plant_id=plant_id)
+        except plant.DoesNotExist:
+            return Response({"error": "Plant with the given ID does not exist"}, status=404)
+
+        personal_plant = PersonalPlant(
+            plant_id=plant,  
+            name=name,  
+            user_id=user_id  
+        )
+        personal_plant.save()
+
+        return Response({"message": "New personal plant created successfully!"}, status=200)
+
+    except json.JSONDecodeError:
+        return Response({"error": "Invalid JSON format"}, status=400)
+    except Exception as e:
+        print(f"Error: {str(e)}") 
+        return Response({"error": str(e)}, status=400)
+        
+        

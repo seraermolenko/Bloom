@@ -2,7 +2,7 @@ from django.db import models
 
 class Gardens(models.Model):
 
-    gardenID = models.AutoField(primary_key=True)
+    garden_id = models.AutoField(primary_key=True)
     #userID = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='gardens')
     name = models.CharField(max_length=100)
     private = models.BooleanField()
@@ -71,8 +71,8 @@ class Plant(models.Model):
 
 class PersonalPlant(models.Model):
 
-    personalPlantID = models.AutoField(primary_key=True)
-    plantID = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
+    personalPlant_id = models.AutoField(primary_key=True)
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='plants')
     name = models.CharField(max_length=100, blank=True, null=True)
     sensor_id = models.IntegerField(blank=True, null=True)
-    userID = 0
+    user_id = models.IntegerField(blank=True, null=True)

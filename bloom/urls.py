@@ -23,5 +23,7 @@ urlpatterns = [
     path('plants/search/', views.search_plants, name='search_plants'),
     # path('users/', include('users.urls')), # user handeling to user app 
     path('humidity/', views.send_humidity_kafka, name='send_humidity_kafka'),
-    path('evaluate_humidity/', views.evaluate_humidity, name='evaluate_humidity')
+    path('evaluate_humidity/', views.evaluate_humidity, name='evaluate_humidity'),
+    path('personal_plants/search/', views.search_PersonalPlant, name='search_PersonalPlant'), 
+    path('personal_plants/create/', views.create_personalPlant, name='create_personalPlant')
 ]
