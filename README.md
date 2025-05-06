@@ -8,7 +8,9 @@
 
 #### Introduction
 
-I created Bloom after struggling to keep my plants alive. The goal is simple: build an application that combines plant management, information, and automation. This project was also driven by desire to learn new tools and concepts, ranging from containerization and data streaming to working with sensors. 
+A smart plant monitoring system that integrates sensors, real-time data processing, and a modern full-stack web interface. The goal is to automate plant care (like watering) and visualize the plant’s health in real time.
+
+I created Bloom after struggling to keep my plants alive. The goal is to build an application that combines plant management, information, and automation. This project was also driven by desire to learn new tools and concepts, ranging from containerization and data streaming to working with sensors. 
 
 **Summary:**  
 Bloom maintains database of 200+ plants and their unique environmental needs. An ESP32 connected to a moisture sensor monitors a plant's soil moisture. The plants status/sensor readings are streamed and updated in real time using kafka and websockets. When readings fall outside the optimal range (based on species-specific thresholds from Treffle.io), a warning is generated and automated watering is triggerd if the mositure is too low. The details and history of each personal plant is stored and can be viewed.
