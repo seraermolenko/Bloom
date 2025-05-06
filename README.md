@@ -1,8 +1,15 @@
 ## Bloom
 #### Table of Contents
 - [Introduction](#introduction)
-- [Tech Stack & Architecture](#Tech-Stack)
+- [Tech Stack](#tech-stack)
 - [Database Schema](#database-schema)
+- [Backend (Django + Django REST Framework)](#backend-django--django-rest-framework)
+- [Messaging Layer (Apache Kafka)](#messaging-layer-apache-kafka)
+- [Containerization & Cloud Hosting](#containerization--cloud-hosting)
+- [Frontend (React + TypeScript + TailwindCSS)](#frontend-react--typescript--tailwindcss)
+- [Dockerized Components](#dockerized-components)
+- [Real-Time Updates](#real-time-updates)
+- [Charting & Visualization](#charting--visualization)
 - [Roadmap](#roadmap)
 - [Notes](#notes)
 
@@ -46,6 +53,91 @@ Tables:
 - **Watering History**: Logs every time a plant is watered, automatically or manually, with the exact date and time
 
 ![databaseSnapshot](images/pgSnapshot.png)
+
+
+#### Backend (Django + Django REST Framework)
+
+**Framework**: Django  
+**API**: Django REST Framework
+
+#### Features
+
+- **Sensor Data Ingestion:** Accepts POST data from ESP32 and streams it into Kafka
+- **Real-Time Moisture Evaluation:** Kafka consumer evaluates soil moisture and updates plant status accordingly (`Thirsty`, `Happy`, `Wet`)
+- **Auto-Watering Logic:** Automatically triggers watering if enabled and moisture falls below threshold
+- **History Tracking:** Status and watering events are saved into separate tables for visual charting
+- **Search & Filtering:** Users can search for plants by name and retrieve gardens/personal plants dynamically
+- **Sensor Assignment:** Users can assign available sensor IDs to specific plants
+- **Latest Reading API:** Frontend can poll latest moisture values per sensor
+- **User & Garden Management:** Users can create, view, and delete gardens and personal plants
+- **Data-Rich Plant Views:** Each personal plant includes detailed botanical and care metadata
+
+### Features:
+- Parses and validates incoming sensor data  
+- Automatically updates plant status based on moisture thresholds (e.g., *Thirsty*, *Happy*)  
+- Saves status and watering events to history tables for charting  
+
+#### Messaging Layer (Apache Kafka)
+
+**Version**: Kafka 4.0 in KRaft mode (no Zookeeper)
+
+### Topics:
+- `mositure` — Sensor readings  
+- `water` — Watering command instructions  
+
+### Consumers/Producers:
+- Consumer resets `mosisture` topic offset every 24h via shell script  
+- Producer sends messages to `water` topic when watering needs are triggered  
+
+#### Containerization & Cloud Hosting
+
+**Tools**: Docker, Amazon Web Services (AWS)
+
+### Planned Deployment:
+- Use **EC2** for hosting Django backend and Kafka  
+- Consider **RDS** for managed PostgreSQL  
+- **S3** for static/media storage (if needed) 
+
+
+#### Frontend (React + TypeScript + TailwindCSS)
+
+**Framework**: React with Vite  
+**Languages**: TypeScript  
+**Styling**: TailwindCSS
+
+### Features:
+- View gardens and plants  
+- Real-time updates using WebSocket  
+- View moisture charts and history  
+- Add/Delete/Update plants  
+- UI states for status (*Thirsty*, *Happy*, etc.) with animated effects  
+
+### Modularized Components:
+- Pages: `GardenPage`, `HomePage`  
+- Modals: `AddPlantModal`, `DeleteConfirmModal`, `SettingsModal` 
+
+#### Dockerized Components
+
+- PostgreSQL DB  
+- Django backend *(planned)*  
+
+Use: Local dev setup and future deployment  
+
+
+#### Real-Time Updates
+
+**WebSocket**:
+- Backend sends real-time updates on plant status to frontend via **Django Channels**  
+- Frontend updates state without needing full re-fetch 
+
+
+#### Charting & Visualization
+
+**Chart Library**: Recharts  
+
+### Data Shown:
+- Plant moisture/status over time  
+- Only renders charts when history exists  
 
 
 #### Roadmap 
