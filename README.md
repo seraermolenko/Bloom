@@ -1,7 +1,7 @@
 ## Bloom
 #### Table of Contents
 - [Introduction](#introduction)
-- [Tech Stack](#tech-stack)
+- [Tech Stack](#tech-stack) 
 - [Database Schema](#database-schema)
 - [Backend (Django + Django REST Framework)](#backend-django--django-rest-framework)
 - [Messaging Layer (Apache Kafka)](#messaging-layer-apache-kafka)
@@ -13,6 +13,10 @@
 - [Roadmap](#roadmap)
 - [Notes](#notes)
 
+## Live Demo
+Coming soon! 
+
+
 ### Introduction
 
 I created Bloom after struggling to keep my plants alive. The goal is to automate plant care (like watering) and visualize the plant’s health in real time. This project was also driven by desire to learn new tools and concepts, ranging from containerization and data streaming to working with sensors. 
@@ -20,13 +24,17 @@ I created Bloom after struggling to keep my plants alive. The goal is to automat
 **Summary**  
 Bloom is a smart plant monitoring system that integrates sensors, real-time data processing, and a modern full-stack web interface. Bloom maintains database of 200+ plants and their unique environmental needs. An ESP32 connected to a moisture sensor monitors a plant's soil moisture. The plants status/sensor readings are streamed and updated in real time using kafka and websockets. When readings fall outside the optimal range (based on species-specific thresholds from Treffle.io), a warning is generated and automated watering is triggerd if the mositure is too low. The details and history of each personal plant is stored and can be viewed.
 
-Data Flow:
-Moisture Sensor (DHT11)-> ESP32 -> HTTP POST -> Kafka broker ->  Django API -> Kafka Consumer -> Django Backend -> WebSocket -> React Frontend
+<details>
+<summary><strong>View Data Flow</strong> (click to expand)</summary>
 
-- *ESP32 producer is defined in another repository called Mositure* 
-- *Watering alerts are generated when the moisture level exceeds thresholds derived from Treffle.io plant data*
+Moisture Sensor (DHT11) → ESP32 → HTTP POST → Kafka Broker → Django API → Kafka Consumer → Django Backend → WebSocket → React Frontend
 
-### Tech Stack 
+- *ESP32 producer lives in a separate repository called `Moisture`*
+- *Moisture thresholds are dynamically derived from Treffle.io plant data*
+
+</details>
+
+### 🌱  Tech Stack 
 
 **Backend:** Django REST Framework  
 **Frontend:** React + TypeScript + TailwindCSS (modular components, routing)  
