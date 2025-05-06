@@ -34,8 +34,8 @@ def main():
     print("Consumer started...")
     with app.get_consumer() as consumer: 
         #Topic of intrest 
-        consumer.subscribe(["humidity"])
-        print("Subscribed to topic: humidity")
+        consumer.subscribe(["moisture"])
+        print("Subscribed to topic: moisture")
         last_message_time = time.time()
         last_reset_time = time.time()
 

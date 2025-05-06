@@ -16,7 +16,7 @@ Bloom maintains database of 200+ plants and their unique environmental needs. An
 Data Flow:
 Moisture Sensor (DHT11)-> ESP32 -> HTTP POST -> Kafka broker ->  Django API -> Kafka Consumer -> Django Backend -> WebSocket -> React Frontend
 
-- *ESP32 producer is defined in another repository called Humidity* 
+- *ESP32 producer is defined in another repository called Mositure* 
 - *Watering alerts are generated when the moisture level exceeds thresholds derived from Treffle.io plant data*
 
 #### Tech Stack 

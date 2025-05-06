@@ -41,13 +41,13 @@ watering_producer = KafkaProducer(
     key_serializer=lambda k: str(k).encode('utf-8')
 )
 
-def send_watering_kafka(sensor_id, plant_id):
+def send_water_kafka(sensor_id, plant_id):
     kafka_message = {
         "sensor_id": sensor_id,
         "plant_id": plant_id,
     }
     try:
-        watering_producer.send("watering", key=sensor_id, value=kafka_message)
+        watering_producer.send("water", key=sensor_id, value=kafka_message)
         watering_producer.flush()  
         print(f"Sent watering trigger to Kafka for plant {plant_id} with sensor {sensor_id}")
         return True  
@@ -82,7 +82,7 @@ def send_moisture_kafka(request):
             "moisture": moisture
         }
 
-        moisture_producer.send("humidity", key=sensor_id, value=kafka_message)
+        moisture_producer.send("moisture", key=sensor_id, value=kafka_message)
         # send any buffered messages
         # producer.flush() 
 
@@ -122,7 +122,7 @@ def evaluate_moisture(request):
             personal_plant.status = 'Thirsty'
             if personal_plant.auto_watering:
                 print(f"Moisture below threshold, triggering watering for plant {personal_plant.id}")
-                success = send_watering_kafka(sensor_id, personal_plant.id)  
+                success = send_water_kafka(sensor_id, personal_plant.id)  
                 if success:
                     print(f"Successfully sent message to water plant {personal_plant.id}, last watered updated.")
                 else:
