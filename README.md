@@ -29,12 +29,12 @@ Bloom is a smart plant monitoring system that integrates sensors, real-time data
 
 Moisture Sensor (DHT11) → ESP32 → HTTP POST → Kafka Broker → Django API → Kafka Consumer → Django Backend → WebSocket → React Frontend
 
+![Architecture Diagram](images/bloomFlowchart.png)
+
 - *ESP32 producer lives in a separate repository called `Moisture`*
 - *Moisture thresholds are dynamically derived from Treffle.io plant data*
 
 </details>
-
-![Architecture Diagram](images/bloomFlowchart.png)
 
 ### 🌱  Tech Stack 
 
@@ -57,7 +57,13 @@ Tables:
 - **Status History**: Records each time a plant's status changes (e.g., Happy, Thirsty, Wet), along with the timestamp
 - **Watering History**: Logs every time a plant is watered, automatically or manually, with the exact date and time
 
-![databaseSnapshot](images/pgSnapshot.png)
+
+<details>
+<summary><strong>View pgSnapshot</strong> (click to expand)</summary>
+
+![databaseSnapshot](images/pgSnapshot.png)isture thresholds are dynamically derived from Treffle.io plant data*
+
+</details>
 
 
 ### Backend (Django + Django REST Framework)
