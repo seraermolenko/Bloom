@@ -92,7 +92,7 @@ Tables:
 
 **Tools**: Docker, Amazon Web Services (AWS)
 
-### Planned Deployment:
+#### Planned Deployment:
 - Use **EC2** for hosting Django backend and Kafka  
 - Consider **RDS** for managed PostgreSQL  
 - **S3** for static/media storage (if needed) 
@@ -104,14 +104,14 @@ Tables:
 **Languages**: TypeScript  
 **Styling**: TailwindCSS
 
-### Features:
+#### Features:
 - View gardens and plants  
 - Real-time updates using WebSocket  
 - View moisture charts and history  
 - Add/Delete/Update plants  
 - UI states for status (*Thirsty*, *Happy*, etc.) with animated effects  
 
-### Modularized Components:
+#### Modularized Components:
 - Pages: `GardenPage`, `HomePage`  
 - Modals: `AddPlantModal`, `DeleteConfirmModal`, `SettingsModal` 
 
@@ -123,14 +123,14 @@ Tables:
 Use: Local dev setup and future deployment  
 
 
-### Real-Time Updates
+### ⚡ Real-Time Updates
 
 **WebSocket**:
 - Backend sends real-time updates on plant status to frontend via **Django Channels**  
 - Frontend updates state without needing full re-fetch 
 
 
-### Charting & Visualization
+### 📊 Charting & Visualization
 
 **Chart Library**: Recharts  
 
