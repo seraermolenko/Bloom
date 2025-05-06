@@ -1,21 +1,23 @@
 ## Bloom
 #### Table of Contents
 - [Introduction](#introduction)
-- [Technologies Used](#technologies-used)
+- [Tech Stack & Architecture](#Tech Stack & Architecture)
 - [Database Schema](#database-schema)
 - [Roadmap](#roadmap)
+- [Notes](#notes)
 
 #### Introduction
 
-I created Bloom after struggling to keep my plants alive. The goal is simple: build an application that combines plant management, information, and automation. This project was also driven by desire to learn new tools and concepts, ranging from containerization and data streaming to working with sensor drivers. 
+I created Bloom after struggling to keep my plants alive. The goal is simple: build an application that combines plant management, information, and automation. This project was also driven by desire to learn new tools and concepts, ranging from containerization and data streaming to working with sensors. 
 
-Quick summary: 
-Bloom has a database containing 200 popular plants and their information. An ESP32 streams values from a humidity sensor monitors my plant's soil level. When this value is outside of the specific plant's threshold, a warning is sent. 
+**Summary:**  
+Bloom maintains database of 200+ plants and their unique environmental needs. An ESP32 connected to a moisture sensor monitors a plant's soil moisture. The plants status/sensor readings are streamed and updated in real time using kafka and websockets. When readings fall outside the optimal range (based on species-specific thresholds from Treffle.io), a warning is generated and automated watering is triggerd if the mositure is too low. The details and history of each personal plant is stored and can be viewed.
 
-Humidity Sensor Driver -> ESP32 ->  POST request -> sends data to kafka broker ->  consumer 
+Data Flow:
+Moisture Sensor (DHT11)-> ESP32 -> HTTP POST -> Kafka broker ->  Django API -> Kafka Consumer -> Django Backend -> WebSocket -> React Frontend
 
 - *ESP32 producer is defined in another repository called Humidity* 
-- *Watering notification is triggered by values outside of the specific threshold that is set based on treffle.io's plant data*
+- *Watering alerts are generated when the moisture level exceeds thresholds derived from Treffle.io plant data*
 
 Soon to come:
 My next step is to keep learning React so that I can create a UI.
@@ -25,38 +27,51 @@ Eventually, Bloom could offer
 - Tracking plant's health, age, and growth.
 - Connecting with friends to share gardens and plant cuttings.
 
+#### Tech Stack & Architecture
 
-#### Technologies Used
-- PostgresSQL for the database 
-- ESP32 for the microcontroller 
-- DHT11 for the humidity sensor
-- Docker Volume for the PostgresSQL database
-- Django for the back-end framework 
-- React for the front-end framework
-- pgAdmin4 for database management 
-- Postman for API testing 
-- API's: Treffle.io  
+- Backend: Django REST Framework
+- Frontend: React + TypeScript + TailwindCSS (modular components, routing)
+- Messaging: Apache Kafka for real-time soil data ingestion
+- Streaming: 
+- Database: PostgreSQL with pgAdmin4 for management
+- Containerization: Docker with volumes (used for PostgreSQL + future deploy)
+- Microcontroller: ESP32 (Wi-Fi enabled, reads DHT11 humidity sensor)
+- API: Treffle.io used to populate plant database
+
+- Tools: PgAdmin
 
 #### DataBase Schema
 
 Tables:
-- **Plants**: Stores plant information (name, family, genus, etc.)
-- **Users**: (soon to come) Stores user details and preferences
-- **Personal Plants**: Links users to plants with care history
-- **Garden**: Stores garden-specific information
+- **Plants**: Stores public plant data (scientific name, care info, etc.)
+- **Users** *(coming soon)*: Stores user accounts and garden ownership
+- **Personal Plants**: Tracks a user’s individual plant (watering, age, custom name)
+- **Gardens**: User-defined containers for organizing multiple PersonalPlants
+- **SensorData** *(internal)*: Logs moisture values and timestamps
+- **Status History**: Records each time a plant's status changes (e.g., Happy, Thirsty, Wet), along with the timestamp
+- **Watering History**: Logs every time a plant is watered, automatically or manually, with the exact date and time
 
 ![databaseSnapshot](images/pgSnapshot.png)
 
 
 #### Roadmap 
 
-Current Progress
-- Created database schema
-- Propagated the database with 100 most-popular plants, using Treffle.io API to fetch information
-- Connected frontend to backend API's
-- Created a kafka topic and established a connection between producer/consumer
+Completed
+- [x] Defined initial schema
+- [x] Populated database with top 100 plants from Treffle.io
+- [x] Created Kafka producer (ESP32) and consumer (Django) pipeline
+- [x] Created basic UI and component architecture with React
+- [x] Connected Django API to frontend
+- [x] Implemented auto-watering logic based on moisture thresholds
+- [x] Connected sensor ID to PersonalPlant instance
 
-Upcoming Tasks
-- Iteratively implement functionalities
-- Deploy (future)
-- Integrated water automation 
+Future Plans
+- [ ] Add email or mobile notifications when moisture is too low
+- [ ] Automate testing 
+- [ ] Design and integrate a physical water pump circuit controlled via ESP32
+- [ ] Add authentication and user accounts
+- [ ] Enable garden sharing between friends
+- [ ] Predict bloom/growth cycles using historical data
+- [ ] Deploy Bloom backend on AWS EC2 for persistent hosting
+- [ ] Improve frontend styling and performance
+
