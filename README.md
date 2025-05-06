@@ -1,7 +1,7 @@
 ## Bloom
 #### Table of Contents
 - [Introduction](#introduction)
-- [Tech Stack & Architecture](#Tech Stack & Architecture)
+- [Tech Stack & Architecture](#Tech-Stack)
 - [Database Schema](#database-schema)
 - [Roadmap](#roadmap)
 - [Notes](#notes)
@@ -27,7 +27,7 @@ Eventually, Bloom could offer
 - Tracking plant's health, age, and growth.
 - Connecting with friends to share gardens and plant cuttings.
 
-#### Tech Stack & Architecture
+#### Tech Stack 
 
 - Backend: Django REST Framework
 - Frontend: React + TypeScript + TailwindCSS (modular components, routing)
