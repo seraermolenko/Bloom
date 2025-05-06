@@ -13,11 +13,11 @@
 - [Roadmap](#roadmap)
 - [Notes](#notes)
 
-## Live Demo
+### Live Demo
 Coming soon! 
 
 
-### Introduction
+## Introduction
 
 I created Bloom after struggling to keep my plants alive. The goal is to automate plant care (like watering) and visualize the plant’s health in real time. This project was also driven by desire to learn new tools and concepts, ranging from containerization and data streaming to working with sensors. 
 
@@ -76,7 +76,7 @@ Tables:
 - **Data-Rich Plant Views:** Each personal plant includes detailed botanical and care metadata
 
 
-### Messaging Layer (Apache Kafka)
+### 📡 Messaging Layer (Apache Kafka)
 
 **Version**: Kafka 4.0 in KRaft mode (no Zookeeper)
 
@@ -88,7 +88,7 @@ Tables:
 - Consumer resets `mosisture` topic offset every 24h via shell script  
 - Producer sends messages to `water` topic when watering needs are triggered  
 
-### Containerization & Cloud Hosting
+### ☁️ Containerization & Cloud Hosting 
 
 **Tools**: Docker, Amazon Web Services (AWS)
 
@@ -115,7 +115,7 @@ Tables:
 - Pages: `GardenPage`, `HomePage`  
 - Modals: `AddPlantModal`, `DeleteConfirmModal`, `SettingsModal` 
 
-### Dockerized Components
+### 🐳 Dockerized Components
 
 - PostgreSQL DB  
 - Django backend *(planned)*  
