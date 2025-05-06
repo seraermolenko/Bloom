@@ -19,14 +19,6 @@ Moisture Sensor (DHT11)-> ESP32 -> HTTP POST -> Kafka broker ->  Django API -> K
 - *ESP32 producer is defined in another repository called Humidity* 
 - *Watering alerts are generated when the moisture level exceeds thresholds derived from Treffle.io plant data*
 
-Soon to come:
-My next step is to keep learning React so that I can create a UI.
-Eventually, Bloom could offer
-- Access to detailed care instructions for plants.
-- Automate watering schedules based on plant preferences.
-- Tracking plant's health, age, and growth.
-- Connecting with friends to share gardens and plant cuttings.
-
 #### Tech Stack 
 
 - Backend: Django REST Framework
