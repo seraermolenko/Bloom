@@ -34,6 +34,8 @@ Moisture Sensor (DHT11) → ESP32 → HTTP POST → Kafka Broker → Django API 
 
 </details>
 
+![Architecture Diagram](images/bloomFlowchart.png)
+
 ### 🌱  Tech Stack 
 
 **Backend:** Django REST Framework  
