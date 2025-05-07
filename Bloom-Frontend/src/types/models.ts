@@ -17,7 +17,6 @@ export type PlantInGarden = {
     genus: string | null;
     genus_id: number | null;
     edible: boolean | null;
-    edible_parts: string[] | null;
     vegetable: boolean | null;
     growth_rate: string | null;
     max_height: number | null;
@@ -36,13 +35,10 @@ export type PlantInGarden = {
     max_temp: number | null;
     min_temp: number | null;
     days_to_harvest: number | null;
-    atmospheric_moisture: number | null;
-    min_precipitation: number[] | null;
-    max_precipitation: number[] | null;
+    atmospheric_humidity: number | null;
     min_root_depth: number[] | null;
     bloom_months: string[] | null;
     fruit_months: string[] | null;
-    ligneous_type: string | null;
 };
   
 export type Garden = {

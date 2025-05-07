@@ -350,7 +350,6 @@ def get_garden(request):
                 'genus': personal_plant.plant.genus,
                 'genus_id': personal_plant.plant.genus_id,
                 'edible': personal_plant.plant.edible,
-                'edible_parts': personal_plant.plant.edible_parts,
                 'vegetable': personal_plant.plant.vegetable,
                 'growth_rate': personal_plant.plant.growth_rate,
                 'max_height': personal_plant.plant.max_height,
@@ -370,12 +369,9 @@ def get_garden(request):
                 'min_temp': personal_plant.plant.min_temp,
                 'days_to_harvest': personal_plant.plant.days_to_harvest,
                 'atmospheric_humidity': personal_plant.plant.atmospheric_humidity,
-                'min_precipitation': personal_plant.plant.min_precipitation,
-                'max_precipitation': personal_plant.plant.max_precipitation,
                 'min_root_depth': personal_plant.plant.min_root_depth,
                 'bloom_months': personal_plant.plant.bloom_months,
                 'fruit_months': personal_plant.plant.fruit_months,
-                'ligneous_type': personal_plant.plant.ligneous_type,
             })
 
         garden_data = {

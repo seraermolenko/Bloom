@@ -547,3 +547,10 @@
 .history-link:hover {
   color: var(--clay-blush-dark);
 }
+
+
+.section-title {
+  color: var(--pine-dark);
+  margin-top: 24px;
+  margin-bottom: 8px;
+}

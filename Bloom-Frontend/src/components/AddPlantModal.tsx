@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 type Props = {
     customName: string;
     sensor: number;
@@ -23,6 +25,7 @@ type Props = {
     autoWatering,
     onAutoWateringChange,
   }: Props) {
+    const [autoWateringError, setAutoWateringError] = useState(false);
     return (
       <div className="modal-overlay">
         <div className="modal">
@@ -65,11 +68,24 @@ type Props = {
               <input
                 type="checkbox"
                 checked={autoWatering}
-                onChange={(e) => onAutoWateringChange(e.target.checked)}
+                onChange={(e) => {
+                  if (sensor === 0 || isSensorTaken(sensor)) {
+                    setAutoWateringError(true);
+                    setTimeout(() => setAutoWateringError(false), 1300); 
+                    return;
+                  }
+                  setAutoWateringError(false); // Clear error if valid
+                  onAutoWateringChange(e.target.checked);
+                }}
                 style={{ width: '16px', height: '16px' }}
               />
-              Auto-Watering 
+              Auto-Watering
             </label>
+            {autoWateringError && (
+              <div className="error-message" style={{ color: 'red', marginTop: '4px' }}>
+                Auto Watering needs sensor ID
+              </div>
+            )}
           </div>
 
           <div className="modal-actions">
