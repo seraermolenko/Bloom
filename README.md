@@ -32,7 +32,7 @@ Bloom is a smart plant monitoring system that integrates sensors, real-time data
 ![Architecture Diagram](images/bloomDataflow.png)
 
 </details>
-- **ESP32 producer lives in a separate repository called [`Moisture`](https://github.com/seraermolenko/Moisture)**
+- **ESP32 producer lives in a separate repository called [`Moisture`](https://github.com/seraermolenko/Moisture)**  
 - **Moisture thresholds are dynamically derived from Treffle.io plant data**
 
 ### 🌱  Tech Stack 
