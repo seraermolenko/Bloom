@@ -32,11 +32,7 @@ def fetch_plant_by_name(common_name):
 
 def get_plant_details(self_link):
     url = f'https://trefle.io{self_link}?token={TOKEN}'
-    https://trefle.io/api/v1/species?page=2?='W1nnc7w1RK-F7EUcxpGB6j3i2VHzAc5nQlkp-ab-7xw'
-
-    https://trefle.io/api/v1/species/aa-riobambae?token=W1nnc7w1RK-F7EUcxpGB6j3i2VHzAc5nQlkp-ab-7xw
-
-
+    
     try:
         response = requests.get(url)
         response.raise_for_status()

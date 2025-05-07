@@ -8,6 +8,7 @@ interface SavePlantParams {
   setGarden: (garden: any) => void;
   setShowAddPlantModal: (show: boolean) => void;
   resetInputs: () => void;
+  autoWatering: boolean;
 }
 
 export function useSavePlant() {
@@ -21,6 +22,7 @@ export function useSavePlant() {
     setGarden,
     setShowAddPlantModal,
     resetInputs,
+    autoWatering,
   }: SavePlantParams) => {
     if (!selectedPlant || !customName) {
       alert('Please fill in all required fields.');
@@ -38,6 +40,7 @@ export function useSavePlant() {
           garden_id: gardenId,
           custom_name: customName,
           sensor_id: sensor,
+          auto_watering: autoWatering,
         }),
       });
 

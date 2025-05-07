@@ -22,7 +22,7 @@ export default function FullPlantInfo({ plant }: Props) {
         <p><strong>Temperature Range:</strong> {plant.min_temp}° to {plant.max_temp}°</p>
         <p><strong>Days to Harvest:</strong> {plant.days_to_harvest || 'N/A'}</p>
 
-        <p><strong>Edible:</strong> {plant.edible ? 'Yes' : 'No'}</p>
+        <p><strong>Edible:</strong> {plant.edible === true ? 'Yes' : plant.edible === false ? 'No' : 'N/A'}</p>
         <p><strong>Growth Rate:</strong> {plant.growth_rate || 'N/A'}</p>
         <p><strong>Max Height:</strong> {plant.max_height || 'N/A'} cm</p>
         <p><strong>Average Height:</strong> {plant.avg_height || 'N/A'} cm</p>

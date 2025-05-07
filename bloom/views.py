@@ -231,7 +231,7 @@ def create_personalPlant(request):
         custom_name = data.get('custom_name')
         sensor_id = data.get('sensor_id')
         garden_id = data.get('garden_id')
-        auto_watering = data.get('auto_watering', False)
+        auto_watering = data.get('auto_watering')
 
 
         try:

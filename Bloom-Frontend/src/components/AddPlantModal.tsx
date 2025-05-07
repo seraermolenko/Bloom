@@ -7,6 +7,8 @@ type Props = {
     onCancel: () => void;
     onSave: () => void;
     customNameError: boolean;
+    autoWatering: boolean;
+    onAutoWateringChange: (value: boolean) => void;
   };
   
   export default function AddPlantModal({
@@ -18,6 +20,8 @@ type Props = {
     onCancel,
     onSave,
     customNameError,
+    autoWatering,
+    onAutoWateringChange,
   }: Props) {
     return (
       <div className="modal-overlay">
@@ -55,7 +59,19 @@ type Props = {
               </div>
             )}
           </div>
-  
+
+          <div className="form-group" style={{ marginTop: '10px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <input
+                type="checkbox"
+                checked={autoWatering}
+                onChange={(e) => onAutoWateringChange(e.target.checked)}
+                style={{ width: '16px', height: '16px' }}
+              />
+              Auto-Watering 
+            </label>
+          </div>
+
           <div className="modal-actions">
             <button onClick={onCancel} className="cancel-button">Cancel</button>
             <button onClick={onSave} className="confirm-button" disabled={isSensorTaken(sensor)}>

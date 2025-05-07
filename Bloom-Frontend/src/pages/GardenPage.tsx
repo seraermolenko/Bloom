@@ -26,6 +26,7 @@ export default function GardenPage() {
     const [sensor, setSensor] = useState<number>(0);
     const navigate = useNavigate();
     const [customNameError, setCustomNameError] = useState(false);
+    const [autoWatering, setAutoWatering] = useState(false);
   
     useEffect(() => {
       if (!id) return; 
@@ -138,7 +139,12 @@ export default function GardenPage() {
       return () => ws.close();
     }, [id]);    
 
-  
+    useEffect(() => {
+      if (showAddPlantModal) {
+        setCustomNameError(false); 
+      }
+    }, [showAddPlantModal]);
+
     const {
       searchTerm,
       setSearchTerm,
@@ -301,7 +307,12 @@ export default function GardenPage() {
           <AddPlantModal
             customName={customName}
             sensor={sensor}
-            onCustomNameChange={setCustomName}
+            onCustomNameChange={(name) => {
+              setCustomName(name);
+              if (name.trim() !== '') {
+                setCustomNameError(false);
+              }
+            }}
             onSensorChange={setSensor}
             onCancel={() => setShowAddPlantModal(false)}
             onSave={() => {
@@ -317,11 +328,14 @@ export default function GardenPage() {
                 setGarden,
                 setShowAddPlantModal,
                 resetInputs,
+                autoWatering,
               })
               fetchGardenData(); 
             }}
             isSensorTaken={isSensorTaken}
             customNameError={customNameError}
+            autoWatering={autoWatering} 
+            onAutoWateringChange={setAutoWatering}
           />
         )}
 

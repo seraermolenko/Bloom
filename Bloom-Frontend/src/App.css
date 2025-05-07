@@ -399,7 +399,8 @@
 }
 
 .settings-button:hover {
-  color: var(--clay-beige-medium);
+  color: var(--clay-beige-medium); 
+  background-color: transparent;
 }
 .settings-button:focus {
   outline: none; 
