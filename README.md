@@ -17,9 +17,9 @@
 [Live Demo! ](https://www.loom.com/share/ecf26dbbf9f94d1483266473955b723d?sid=83af071a-fb54-4bf9-887d-52ea40ff8e3d)
 
 <details>
-<summary><strong>Sensor Set up </strong> (click to expand)</summary>
+<summary><strong>Sensor Set-up </strong> (click to expand)</summary>
 
-![Sensor Set-up](images/sensor.png)
+![Sensor](images/sensor.png)
 
 Inside the soil is the moisture probe (sensor), which is connected to a breakout board. The breakout board is wired to the ESP32 via the analog output. The probe detects soil moisture levels and the breakout board conditions the signal, providing a variable voltage that the ESP32 reads in real time for monitoring!
 </details>
