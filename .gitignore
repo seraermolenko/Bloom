@@ -1,18 +1,45 @@
-# Python cache files 
-__pycache__/ 
-*.pyc 
+# macOS
+.DS_Store
+
+# Python cache files
+__pycache__/
+*.pyc
 *.pyo
 
 # Virtual environment
-myenv/ 
-.env 
+myenv/
+.env
+venv/
 
-# Local settings 
+# Local settings
 local_settings.py
 
-# Ignore sensitive files 
-*.env 
+# Ignore sensitive files
+*.env
 *.pem
 
-# Python test cache 
+# Python test cache
 .pytest_cache/
+
+# Django
+db.sqlite3
+*.log
+media/
+staticfiles/
+
+# Node / React
+node_modules/
+dist/
+Bloom-Frontend/node_modules/
+Bloom-Frontend/dist/
+
+# Build outputs
+build/
+*.tsbuildinfo
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Redis
+dump.rdb
