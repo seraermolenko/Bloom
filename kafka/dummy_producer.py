@@ -10,7 +10,7 @@ api_url = os.getenv('SEND_MOIST_URL')
 
 def main():
     while True:
-        moisture = random.randint(1, 70)
+        moisture = random.randint(1, 10)
         sensor_id = random.randint(1,4)
         data = {
             "sensor_id": sensor_id,
@@ -21,7 +21,7 @@ def main():
             print(f"Data sent: {data}")
         else:
             print(f"Error sending data: {response.status_code}")
-        time.sleep(5)  # every 15 min 900, 1 hour 3600 
+        time.sleep(1)  # every 15 min 900, 1 hour 3600 
 
 
 if __name__ == "__main__": 

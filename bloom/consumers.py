@@ -1,9 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-import json
-from channels.generic.websocket import AsyncWebsocketConsumer
-
 class GardenConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.garden_id = self.scope['url_route']['kwargs']['garden_id']

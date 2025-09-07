@@ -112,8 +112,8 @@ def evaluate_moisture(request):
         # plant = personal_plant.plantID
         # moisture = plant.moisture  
 
-        min_threshold = 5 #personal_plant.plant.soil_moisture - 2
-        max_threshold = 30 #personal_plant.plant.soil_moisture + 2
+        min_threshold = max(1,personal_plant.plant.soil_moisture - 2)
+        max_threshold = min(10,personal_plant.plant.soil_moisture + 2)
         print(f"Moisture: {moisture}, Min Threshold: {min_threshold}, Max Threshold: {max_threshold}")
         
         previous_status = personal_plant.status
@@ -526,3 +526,15 @@ def get_watering_history(request):
     except Exception as e:
         print(f"Error: {str(e)}")
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def get_plant_by_id(request):
+    plant_id = request.GET.get('plant_id')
+    if not plant_id:
+        return Response({'error': 'No plant_id provided'}, status=400)
+    try:
+        plant = Plant.objects.get(id=plant_id)
+        serializer = PlantSerializer(plant)
+        return Response(serializer.data)
+    except Plant.DoesNotExist:
+        return Response({'error': 'Plant not found'}, status=404)

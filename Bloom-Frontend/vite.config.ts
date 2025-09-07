@@ -27,6 +27,7 @@ export default defineConfig({
       '/taken_sensors/': 'http://localhost:8000',
       '/get_status_history/': 'http://localhost:8000',
       '^/personal_plants/.*': 'http://localhost:8000',
+      '/get_plant_by_id': 'http://localhost:8000',
     }
   }
 })

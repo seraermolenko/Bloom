@@ -18,6 +18,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchUserGardens = async () => {
       try {
+        console.log('Calling /get_user_gardens...');
         const response = await fetch('/get_user_gardens/?user_id=1'); 
         if (!response.ok) throw new Error('Failed to fetch gardens');
         const data = await response.json();
@@ -70,9 +71,18 @@ export default function HomePage() {
     setAvailablePlants, 
   } = usePlantSearch();
 
-  const handlePlantSelect = (plant: any) => {
-    setSelectedPlant(plant);
-    setShowPlantDetails(true);
+  const handlePlantSelect = async (plant: any) => {
+    try {
+      const response = await fetch(`/get_plant_by_id/?plant_id=${plant.id}`);
+      if (!response.ok) throw new Error("Failed to fetch full plant data");
+  
+      const fullPlant = await response.json();
+      setSelectedPlant(fullPlant);
+      setShowPlantDetails(true);
+    } catch (error) {
+      console.error("Error loading full plant info:", error);
+      alert("Unable to load full plant details.");
+    }
   };
 
   const openExploreModal = () => {

@@ -11,7 +11,7 @@ class GardenSerializer(serializers.ModelSerializer):
 class PlantSerializer(serializers.ModelSerializer): 
 	class Meta: 
 		model = Plant 
-		fields = ['id', 'scientific_name', 'common_name'] 
+		fields = '__all__'
 		
 class PersonalPlantSerializer(serializers.ModelSerializer): 
 	plant = PlantSerializer() 

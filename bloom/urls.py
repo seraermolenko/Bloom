@@ -41,4 +41,5 @@ urlpatterns = [
     path('get_latest_moisture/', views.get_latest_moisture, name='get_latest_moisture'),
     path('get_watering_history/', views.get_watering_history, name='get_watering_history'),
     path('get_status_history/', views.get_status_history, name='get_status_history'),
+    path('get_plant_by_id/', views.get_plant_by_id, name='get_plant_by_id')
 ]
