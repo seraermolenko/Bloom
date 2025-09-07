@@ -1,5 +1,6 @@
 # macOS
 .DS_Store
+Bloom-Frontend/.DS_Store
 
 # Python cache files
 __pycache__/
@@ -32,6 +33,7 @@ node_modules/
 dist/
 Bloom-Frontend/node_modules/
 Bloom-Frontend/dist/
+*.tsbuildinfo
 
 # Build outputs
 build/
@@ -43,3 +45,7 @@ build/
 
 # Redis
 dump.rdb
+
+# Frontend env files 
+Bloom-Frontend/.env
+Bloom-Frontend/.env.*
