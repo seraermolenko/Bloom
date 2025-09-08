@@ -1,40 +1,78 @@
-# Build 
-FROM node:20-alpine AS builder
-WORKDIR /app
+name: frontend
 
-COPY package.json package-lock.json* ./
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+on:
+  push:
+    branches: [ main ]
+    paths: [ "Bloom-Frontend/**", ".github/workflows/frontend.yml" ]
+  workflow_dispatch:
 
-COPY . .
-RUN npm run build
+permissions:
+  contents: read
+  packages: write
 
-# Runtime 
-FROM nginx:1.27-alpine
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/bloom-frontend
 
-# SPA-friendly nginx config with history API fallback
-# so /route URLs work when directly requested
-RUN <<'EOF' sh -c 'cat > /etc/nginx/conf.d/default.conf'
-server {
-  listen 80;
-  server_name _;
-  root /usr/share/nginx/html;
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  # Serve static files, try index.html as fallback (SPA)
-  location / {
-    try_files $uri $uri/ /index.html;
-  }
+      - uses: docker/setup-buildx-action@v3
 
-  # Optional: cache static assets a bit
-  location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$ {
-    expires 7d;
-    access_log off;
-    try_files $uri =404;
-  }
-}
-EOF
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build & push (frontend)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./Bloom-Frontend
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # If Vite: leave BUILD_DIR=dist (default). If CRA: set BUILD_DIR=build.
+          build-args: |
+            BUILD_DIR=${{ vars.FRONTEND_BUILD_DIR || 'dist' }}
+            VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL || secrets.VITE_API_BASE_URL }}
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2 (pull & restart service)
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          GH_OWNER: ${{ github.repository_owner }}
+          IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/bloom-frontend
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          # omit "port" to use default 22, or set: port: ${{ secrets.EC2_SSH_PORT }}
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.COMPOSE_DIR || '/opt/bloom' }}"
 
-EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://localhost/ > /dev/null || exit 1
+            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${GH_OWNER}" --password-stdin
+
+            # Pull the latest image and restart the right service
+            # Update the service name if your docker-compose.yml uses e.g. "frontend" instead of "nginx"
+            docker compose pull frontend || docker compose pull nginx
+
+            # Prefer restarting the actual frontend service name.
+            if docker compose ps frontend >/dev/null 2>&1; then
+              docker compose up -d frontend
+            else
+              docker compose up -d nginx
+            fi
+
+            # Optional: prune old images
+            docker image prune -f --filter "until=168h"
